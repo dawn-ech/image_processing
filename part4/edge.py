@@ -20,6 +20,19 @@ img[pad: H + pad, pad: W + pad] = image.copy()
 # 创建输出图像
 output = [[0] * W for _ in range(H)]
 
+Roberts = [
+    np.array([
+        [0, 0, 0],
+        [0, -1, 0],
+        [0, 0, 1]
+    ]),
+    np.array([
+        [0, 0, 0],
+        [0, 0, -1],
+        [0, 1, 0]
+    ]),
+]
+
 Sobel = [
     np.array([
         [-1, -2, -1],
@@ -70,6 +83,12 @@ filter = eval(type)
 # img[pad: H + pad, pad: W + pad] = output.copy()
 
 # 遍历图像的每个像素
+if isinstance(filter, list):
+    for i in range(H):
+        for j in range(W):
+            res = np.sum(filter * img[i:i+window_size,j:j+window_size])
+            output[i][j] = res
+
 for i in range(H):
     for j in range(W):
         res = np.sum(filter * img[i:i+window_size,j:j+window_size])
